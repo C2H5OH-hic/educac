@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Contenidos{% endblock %}
+
+{% block content %}
+<h2>Lista de Contenidos</h2>
+
+<!-- Botón para crear nuevo contenido -->
+<a href="{% url 'contenido-create' %}" class="btn btn-success mb-3">
+    <i class="bi bi-plus-lg"></i> Nuevo Contenido
+</a>
+
+<!-- Tabla de contenidos -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Título</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Recursos</th>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contenido in contenidos %}
+        <tr>
+            <td>{{ contenido.titulo }}</td>
+            <td>{{ contenido.descripcion }}</td>
+            <td>{{ contenido.recursos }}</td>
+            <td>
+                <!-- Botón para editar -->
+                <a href="{% url 'contenido-update' contenido.id %}" 
+                   class="btn btn-warning btn-sm" 
+                   aria-label="Editar {{ contenido.titulo }}">
+                    <i class="bi bi-pencil"></i> Editar
+                </a>
+
+                <!-- Botón para eliminar -->
+                <a href="{% url 'contenido-delete' contenido.id %}" 
+                   class="btn btn-danger btn-sm" 
+                   aria-label="Eliminar {{ contenido.titulo }}">
+                    <i class="bi bi-trash"></i> Eliminar
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <!-- Mensaje cuando no hay contenidos -->
+        <tr>
+            <td colspan="4" class="text-center">No hay contenidos disponibles.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Paginación -->
+{% if is_paginated %}
+<nav>
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Página anterior">
+                Anterior
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item disabled">
+            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+        </li>
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Página siguiente">
+                Siguiente
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="text-center">Panel del Administrador</h1>
+  <p class="text-center">Bienvenido, {{ user.username }}. Aquí puedes gestionar todo el sistema.</p>
+  <div class="text-center mt-4">
+    <!-- Enlace al formulario de registro -->
+    <a href="{% url 'registrar-usuario' %}" class="btn btn-primary">Registrar Nuevo Usuario</a>
+    <!-- Opcionalmente, puedes incluir más opciones -->
+    <a href="/admin/" class="btn btn-danger">Ir al Panel de Administración</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Experimentos{% endblock %}
+
+{% block content %}
+<h1>Lista de Experimentos</h1>
+<a href="crear/" class="btn btn-primary mb-3">Crear Nuevo Experimento</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Profesor</th>
+            <th>Contenido Relacionado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for experimento in experimentos %}
+        <tr>
+            <td>{{ experimento.id }}</td>
+            <td>{{ experimento.nombre }}</td>
+            <td>{{ experimento.profesor.username }}</td>
+            <td>{{ experimento.contenido.titulo }}</td>
+            <td>
+                <a href="{{ experimento.id }}/" class="btn btn-info btn-sm">Detalles</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

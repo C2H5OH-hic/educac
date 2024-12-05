@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear/Editar Experimento{% endblock %}
+
+{% block content %}
+<h2>{% if object %}Editar Experimento{% else %}Crear Experimento{% endif %}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">
+        {% if object %}Guardar Cambios{% else %}Crear{% endif %}
+    </button>
+    <a href="{% url 'experimento-list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

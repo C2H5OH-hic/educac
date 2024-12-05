@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Contenido{% endblock %}
+
+{% block content %}
+<h2>¿Estás seguro de que deseas eliminar este contenido?</h2>
+<p><strong>Título:</strong> {{ object.titulo }}</p>
+<p><strong>Descripción:</strong> {{ object.descripcion }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="{% url 'contenido-list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

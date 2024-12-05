@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel Profesor{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="text-center">Panel del Profesor</h1>
+  <p class="text-center">Bienvenido, {{ user.username }}. Aquí puedes gestionar contenidos y experimentos.</p>
+  <div class="text-center">
+    <a href="/contenidos/" class="btn btn-primary">Gestionar Contenidos</a>
+    <a href="/experimentos/" class="btn btn-secondary">Gestionar Experimentos</a>
+  </div>
+</div>
+{% endblock %}

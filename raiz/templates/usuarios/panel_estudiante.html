@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel Estudiante{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="text-center">Panel del Estudiante</h1>
+  <p class="text-center">Bienvenido, {{ user.username }}. Aquí puedes ver tus experimentos asignados.</p>
+
+  <div class="mt-4">
+    <h3 class="text-center">Tus Experimentos</h3>
+    {% if experimentos %}
+    <ul class="list-group">
+      {% for experimento in experimentos %}
+      <li class="list-group-item">
+        <h5>{{ experimento.nombre }}</h5>
+        <p>{{ experimento.descripcion }}</p>
+        <a href="{% url 'experimento-detail' pk=experimento.id %}" class="btn btn-primary btn-sm">Ver Detalles</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-center">No tienes experimentos asignados en este momento.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
