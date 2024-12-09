@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Banco de Preguntas{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="text-center">Banco de Preguntas</h1>
+
+  <!-- Formulario para Agregar Preguntas -->
+  <div class="mt-5">
+    <h3>Agregar Nueva Pregunta</h3>
+    <form method="post" class="mb-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Guardar Pregunta</button>
+    </form>
+  </div>
+
+  <!-- Opciones de Filtro -->
+  <div class="mb-4">
+    <h4>Filtrar Preguntas</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <a href="{% url 'banco-preguntas' %}" class="btn btn-outline-secondary btn-sm">Todas</a>
+        <a href="{% url 'banco-preguntas-tipo' 'diagnostica' %}" class="btn btn-outline-info btn-sm">Diagnósticas</a>
+        <a href="{% url 'banco-preguntas-tipo' 'final' %}" class="btn btn-outline-warning btn-sm">Finales</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de Preguntas -->
+  <div class="mt-4">
+    <h3>Lista de Preguntas</h3>
+    {% if preguntas %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Texto</th>
+          <th>Tipo</th>
+          <th>Experimento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pregunta in preguntas %}
+        <tr>
+          <td>{{ pregunta.texto }}</td>
+          <td>{{ pregunta.get_tipo_display }}</td>
+          <td>{{ pregunta.experimento.nombre }}</td>
+          <td>
+            <a href="{% url 'banco-preguntas-experimento' pregunta.experimento.id %}" class="btn btn-outline-secondary btn-sm">Ver Experimento</a>
+            <a href="{% url 'eliminar-pregunta' pregunta.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="text-center">No hay preguntas en el banco actualmente.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

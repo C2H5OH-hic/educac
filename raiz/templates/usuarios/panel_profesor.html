@@ -5,10 +5,59 @@
 {% block content %}
 <div class="container mt-4">
   <h1 class="text-center">Panel del Profesor</h1>
-  <p class="text-center">Bienvenido, {{ user.username }}. Aquí puedes gestionar contenidos y experimentos.</p>
-  <div class="text-center">
-    <a href="/contenidos/" class="btn btn-primary">Gestionar Contenidos</a>
-    <a href="/experimentos/" class="btn btn-secondary">Gestionar Experimentos</a>
+  <p class="text-center">Bienvenido, {{ user.username }}. Aquí puedes gestionar todo lo relacionado con tus clases y evaluaciones.</p>
+
+  <!-- Opciones Principales -->
+  <div class="row mt-5 text-center">
+    <!-- Gestión de Contenidos -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Contenidos</h5>
+          <p class="card-text">Crea, edita y organiza los contenidos para tus clases.</p>
+          <a href="/contenidos/" class="btn btn-primary">Gestionar Contenidos</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gestión de Experimentos -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Experimentos</h5>
+          <p class="card-text">Configura y organiza los experimentos para tus estudiantes.</p>
+          <a href="/experimentos/" class="btn btn-secondary">Gestionar Experimentos</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gestión de Evaluaciones -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Evaluaciones</h5>
+          <p class="card-text">Crea y organiza evaluaciones diagnósticas y finales.</p>
+          <a href="/evaluaciones/" class="btn btn-info">Gestionar Evaluaciones</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Banco de Preguntas -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Banco de Preguntas</h5>
+          <p class="card-text">Gestiona el banco de preguntas para todas las evaluaciones.</p>
+          <a href="/evaluaciones/banco-preguntas/" class="btn btn-warning">Ir al Banco</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas o Accesos Rápidos -->
+  <div class="mt-5 text-center">
+    <h4>Estadísticas y Reportes</h4>
+    <p>Próximamente podrás acceder a reportes detallados sobre el progreso de tus estudiantes y el uso de experimentos.</p>
   </div>
 </div>
 {% endblock %}

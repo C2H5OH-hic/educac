@@ -12,6 +12,13 @@ class Experimento(models.Model):
     contenido = models.TextField(blank=True, null=True)
     profesor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="experimentos_creados")
     asignado_a = models.ManyToManyField(Usuario, related_name="experimentos_asignados")
+    horario = models.OneToOneField(
+        'horarios.Horario',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='experimento_asignado'  # Nombre único para evitar conflictos
+    )
 
     def __str__(self):
         return self.nombre

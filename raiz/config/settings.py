@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.experimentos',
     'apps.evaluaciones',
     'apps.limpieza',
+    'apps.horarios',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestionar Evaluaciones{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="text-center">Gestionar Evaluaciones</h1>
+
+  <!-- Botón para Crear Evaluaciones -->
+  <div class="text-center mb-4">
+    <a href="{% url 'evaluacion-create' %}" class="btn btn-primary">Crear Nueva Evaluación</a>
+  </div>
+
+  <!-- Tabla de Evaluaciones -->
+  {% if evaluaciones %}
+  <table class="table table-striped mt-4">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tipo</th>
+        <th>Estudiante</th>
+        <th>Experimento</th>
+        <th>Puntaje</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for evaluacion in evaluaciones %}
+      <tr>
+        <td>{{ evaluacion.id }}</td>
+        <td>{{ evaluacion.get_tipo_display }}</td>
+        <td>{{ evaluacion.estudiante.username }}</td>
+        <td>{{ evaluacion.experimento.nombre }}</td>
+        <td>{{ evaluacion.puntaje }}</td>
+        <td>
+          <a href="{% url 'evaluacion-update' evaluacion.id %}" class="btn btn-sm btn-warning">Editar</a>
+          <a href="{% url 'evaluacion-delete' evaluacion.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="text-center">No hay evaluaciones registradas.</p>
+  {% endif %}
+</div>
+{% endblock %}

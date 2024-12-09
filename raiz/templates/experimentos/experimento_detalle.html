@@ -8,14 +8,23 @@
   <p class="text-muted text-center">{{ experimento.descripcion }}</p>
 
   <div class="mt-4">
-    <h4>Materiales</h4>
-    <ul>
+    <h2>Materiales</h2>
+    {% if experimento.materiales %}
+    <ul class="list-group">
       {% for material in experimento.materiales.splitlines %}
-      <li>{{ material }}</li>
+      <li class="list-group-item">{{ material }}</li>
       {% endfor %}
     </ul>
-    <h4>Procedimiento</h4>
+    {% else %}
+    <p>No se han registrado materiales.</p>
+    {% endif %}
+
+    <h2>Procedimiento</h2>
+    {% if experimento.procedimiento %}
     <p>{{ experimento.procedimiento }}</p>
+    {% else %}
+    <p>No se ha registrado el procedimiento.</p>
+    {% endif %}
   </div>
 
   <div class="text-center mt-4">

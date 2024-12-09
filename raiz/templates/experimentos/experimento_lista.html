@@ -4,15 +4,17 @@
 
 {% block content %}
 <h1>Lista de Experimentos</h1>
-<a href="crear/" class="btn btn-primary mb-3">Crear Nuevo Experimento</a>
+
+<a href="{% url 'experimento-create' %}" class="btn btn-primary mb-3">Crear Nuevo Experimento</a>
+
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Profesor</th>
-            <th>Contenido Relacionado</th>
-            <th>Acciones</th>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Profesor</th>
+            <th scope="col">Contenido Relacionado</th>
+            <th scope="col">Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -20,11 +22,17 @@
         <tr>
             <td>{{ experimento.id }}</td>
             <td>{{ experimento.nombre }}</td>
-            <td>{{ experimento.profesor.username }}</td>
-            <td>{{ experimento.contenido.titulo }}</td>
+            <td>{{ experimento.profesor }}</td>
+            <td>{{ experimento.contenido }}</td>
             <td>
-                <a href="{{ experimento.id }}/" class="btn btn-info btn-sm">Detalles</a>
+                <a href="{% url 'experimento-detail' experimento.id %}" class="btn btn-info btn-sm">Detalles</a>
+                <a href="{% url 'experimento-update' experimento.id %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'experimento-delete' experimento.id %}" class="btn btn-danger btn-sm">Eliminar</a>
             </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">No hay experimentos registrados.</td>
         </tr>
         {% endfor %}
     </tbody>

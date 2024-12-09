@@ -4,24 +4,113 @@
 
 {% block content %}
 <div class="container mt-4">
+  <!-- Encabezado del Panel -->
   <h1 class="text-center">Panel del Estudiante</h1>
-  <p class="text-center">Bienvenido, {{ user.username }}. Aquí puedes ver tus experimentos asignados.</p>
+  <p class="text-center">Bienvenido, {{ user.username }}. Aquí tienes las instrucciones y actividades para tu clase.</p>
 
-  <div class="mt-4">
-    <h3 class="text-center">Tus Experimentos</h3>
-    {% if experimentos %}
-    <ul class="list-group">
-      {% for experimento in experimentos %}
-      <li class="list-group-item">
-        <h5>{{ experimento.nombre }}</h5>
-        <p>{{ experimento.descripcion }}</p>
-        <a href="{% url 'experimento-detail' pk=experimento.id %}" class="btn btn-primary btn-sm">Ver Detalles</a>
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p class="text-center">No tienes experimentos asignados en este momento.</p>
-    {% endif %}
+  {% if horario_actual %}
+  <!-- Información del Horario Activo -->
+  <h3 class="text-center">Clase Activa: {{ horario_actual.experimento.nombre }}</h3>
+  <p class="text-center">Profesor: {{ horario_actual.profesor.username }}</p>
+  <p class="text-center">Horario: {{ horario_actual.dia }} {{ horario_actual.hora_inicio|date:"H:i" }} - {{ horario_actual.hora_fin|date:"H:i" }}</p>
+  {% else %}
+  <h3 class="text-center text-danger">No tienes clases asignadas en este horario.</h3>
+  {% endif %}
+
+  <!-- Barra Cronológica -->
+  <div class="timeline-container mt-5">
+    <h3 class="text-center mb-4">Progreso de la Clase</h3>
+    <div class="timeline">
+      <div class="timeline-item {% if etapa == 'diagnostico' %}active{% endif %}">
+        <div class="timeline-content">Prueba Diagnóstica</div>
+      </div>
+      <div class="timeline-item {% if etapa == 'experimento' %}active{% endif %}">
+        <div class="timeline-content">Experimento</div>
+      </div>
+      <div class="timeline-item {% if etapa == 'evaluacion' %}active{% endif %}">
+        <div class="timeline-content">Evaluación Posterior</div>
+      </div>
+      <div class="timeline-item {% if etapa == 'limpieza' %}active{% endif %}">
+        <div class="timeline-content">Limpieza</div>
+      </div>
+    </div>
   </div>
+
+  <!-- Contenido Dinámico por Etapa -->
+  {% if horario_actual %}
+    {% if etapa == 'diagnostico' %}
+    <section id="diagnostico" class="mt-4">
+      <h3 class="text-center">Prueba Diagnóstica</h3>
+      {% if evaluacion_diagnostica and preguntas %}
+      <form method="post" action="{% url 'diagnostico-submit' pk=evaluacion_diagnostica.id %}">
+        {% csrf_token %}
+        <p class="text-center">Responde las siguientes preguntas:</p>
+        {% for pregunta in preguntas %}
+        <div class="mb-3">
+          <label for="pregunta{{ forloop.counter }}" class="form-label">{{ forloop.counter }}. {{ pregunta.texto }}</label>
+          <textarea class="form-control" id="pregunta{{ forloop.counter }}" name="pregunta{{ forloop.counter }}" rows="3"></textarea>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Enviar Respuestas</button>
+      </form>
+      {% else %}
+      <p class="text-center text-danger">No se ha asignado una evaluación diagnóstica o no hay preguntas disponibles.</p>
+      {% endif %}
+    </section>
+    {% elif etapa == 'experimento' %}
+    <section id="experimento" class="mt-5">
+      <h3 class="text-center">Realiza el Experimento</h3>
+      <p class="text-center">Sigue las instrucciones proporcionadas.</p>
+      <div class="text-center">
+        {% if experimento %}
+        <a href="{% url 'experimento-detail' pk=experimento.id %}" class="btn btn-primary">Ir al Experimento</a>
+        {% else %}
+        <p class="text-center text-danger">No se ha asignado un experimento para esta etapa.</p>
+        {% endif %}
+      </div>
+    </section>
+    {% elif etapa == 'evaluacion' %}
+    <section id="evaluacion" class="mt-5">
+      <h3 class="text-center">Evaluación Posterior</h3>
+      <p class="text-center">Responde estas preguntas sobre tu experiencia y resultados del experimento.</p>
+      <form method="post" action="{% url 'evaluacion-submit' pk=experimento.id %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="resultado" class="form-label">1. ¿Qué resultados observaste?</label>
+          <textarea class="form-control" id="resultado" name="resultado" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar Evaluación</button>
+      </form>
+    </section>
+    {% elif etapa == 'limpieza' %}
+    <section id="limpieza" class="mt-5">
+      <h3 class="text-center">Limpieza</h3>
+      <p class="text-center">Por favor, asegúrate de limpiar y ordenar todo antes de finalizar.</p>
+      <div class="text-center">
+        <a href="{% url 'experimento-list' %}" class="btn btn-success">Finalizar Clase</a>
+      </div>
+    </section>
+    {% endif %}
+  {% else %}
+  <h3 class="text-center text-danger">No tienes clases asignadas en este horario.</h3>
+  {% endif %}
 </div>
+
+<!-- Script para la Barra Cronológica -->
+<script>
+  let items = document.querySelectorAll('.timeline-item');
+  let sections = document.querySelectorAll('section');
+  let index = Array.from(items).findIndex((item) => item.classList.contains('active')) + 1;
+
+  function activateTimelineItem() {
+    if (index < items.length) {
+      items[index].classList.add('active');
+      sections[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      index++;
+    }
+  }
+
+  // Simula el avance cada 15 minutos (5 segundos para pruebas)
+  setInterval(activateTimelineItem, 5000); // Cambiar a 900000 para producción
+</script>
 {% endblock %}
